@@ -2,6 +2,7 @@
 import qs                   from 'qs';
 import React                from 'react';
 import express              from 'express';
+import favicon              from 'serve-favicon';
 import { renderToString }   from 'react-dom/server';
 import { createStore }      from 'redux';
 import { Provider }         from 'react-redux';
@@ -53,6 +54,7 @@ app.use(webpackDevMiddleware(compiler, {
   noInfo:     true,
   publicPath: webpackConfig.output.publicPath
 }));
+app.use(favicon(__dirname + '/../static/favicon.ico'));
 app.use(webpackHotMiddleware(compiler));
 app.use(handleRender);
 app.listen(port);
