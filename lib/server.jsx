@@ -6,12 +6,19 @@ import favicon              from 'serve-favicon';
 import { renderToString }   from 'react-dom/server';
 import { createStore }      from 'redux';
 import { Provider }         from 'react-redux';
+import MuiThemeProvider     from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme        from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme          from 'material-ui/styles/getMuiTheme';
 import webpack              from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import {
+  match,
+  RouterContext,
+} from 'react-router';
 import webpackConfig        from '../webpack.config';
+import routes               from './routes';
 import reducers             from './reducers';
-import App                  from './containers/App';
 
 function renderFullPage(html, preloadedState) {
   return `
@@ -38,13 +45,27 @@ function handleRender(req, res) {
   const preloadedState = { params };
   const store          = createStore(reducers, preloadedState);
 
-  const html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-  const finalState = store.getState();
-  res.send(renderFullPage(html, finalState));
+  global.navigator = global.navigator || {};
+  global.navigator.userAgent = req.headers['user-agent'] || 'all';
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      const html = renderToString(
+        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        </MuiThemeProvider>
+      );
+      const finalState = store.getState();
+      res.send(renderFullPage(html, finalState));
+    } else {
+       res.status(500).send('unexpected error');
+    }
+  });
 }
 
 const app      = express();
