@@ -7,47 +7,58 @@ import SwipeableViews from 'react-swipeable-views';
 class StreamTabs extends React.Component {
   static get propTypes() {
     return {
-      handleTabChange: React.PropTypes.func.isRequired,
+      changeStream: React.PropTypes.func.isRequired,
+      streams:      React.PropTypes.array.isRequired,
+      streamId:     React.PropTypes.string.isRequired,
+      children:     React.PropTypes.element,
+    };
+  }
+  static get defaultProps() {
+    return {
+      children: <div />,
     };
   }
   componentDidMount() {
   }
+  currentIndex() {
+    const i = this.props.streams.findIndex(s => s.id === this.props.streamId);
+    if (i === -1) {
+      return 0;
+    }
+    return i;
+  }
+  handleChangeIndex(index) {
+    const stream = this.props.streams[index];
+    this.props.changeStream(stream.id);
+  }
   render() {
-    const tabs = [
-      { label: 'Highlight', id: 'journal/hightlight'},
-      { label: 'News', id: 'topic/news'},
-      { label: 'Songs', id: 'topic/songs'},
-      { label: 'events', id: 'topic/events'},
-      { label: 'Overseas', id: 'topic/overseas'},
-      { label: 'Videos', id: 'topic/videos'},
-    ].map((stream) => (<Tab key={stream.id} label={stream.label} value={stream.id}/>));
-    const styles = {
-      headline: {
-        fontSize: 24,
-        paddingTop: 16,
-        marginBottom: 12,
-        fontWeight: 400,
-      },
-      slide: {
-        padding: 10,
-      },
-    };
+    const tabs = this.props.streams.map(stream => (
+      <Tab key={`tab:${stream.id}`} label={stream.label} value={stream.id} />
+    ));
+    const views = this.props.streams.map((stream, index) => {
+      if (stream.id === this.props.streamId) {
+        return (
+          <div key={`view:${stream.id}`}>
+            {this.props.children}
+          </div>
+        );
+      }
+      return (
+        <div key={`view:${stream.id}`}>
+          <h2>{`${index}: ${stream.id}`}</h2>
+        </div>
+      );
+    });
     return (
       <div>
-        <Tabs onChange={this.props.handleTabChange}>
+        <Tabs value={this.props.streamId} onChange={this.props.changeStream}>
           {tabs}
         </Tabs>
-        <SwipeableViews>
-          <div>
-            <h2 style={styles.headline}>Tabs with slide effect</h2>
-            Swipe to see the next slide.<br />
-          </div>
-          <div style={styles.slide}>
-            slide n°2
-          </div>
-          <div style={styles.slide}>
-            slide n°3
-          </div>
+        <SwipeableViews
+          index={this.currentIndex()}
+          onChangeIndex={index => this.handleChangeIndex(index)}
+        >
+          {views}
         </SwipeableViews>
       </div>
     );
@@ -56,15 +67,14 @@ class StreamTabs extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    streams:  state.streams.items,
     streamId: ownProps.params.splat,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    handleClick: () => {
-    },
-    handleTabChange: (streamId) => {
+    changeStream: (streamId) => {
       dispatch(push(`/streams/${streamId}`));
     },
   };
