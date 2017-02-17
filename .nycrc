@@ -1,0 +1,15 @@
+{
+  "require": [
+    "./test/setup.js",
+    "babel-register"
+  ],
+  "include": [
+    "lib/**/*.{js,jsx}"
+  ],
+  "reporter": [
+    "text-summary",
+    "clover"
+  ],
+  "sourceMap": false,
+  "instrument": false
+}
