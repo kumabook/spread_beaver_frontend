@@ -13,7 +13,7 @@ class App extends React.Component {
     return {
       children: React.PropTypes.oneOfType([
         React.PropTypes.arrayOf(React.PropTypes.node),
-        React.PropTypes.node
+        React.PropTypes.node,
       ]),
       handleClick: React.PropTypes.func.isRequired,
     };
@@ -38,8 +38,8 @@ class App extends React.Component {
         <IconMenu
           iconStyle={styles.iconButtonIconStyle}
           iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <MenuItem primaryText="Refresh" />
           <MenuItem primaryText="Help" />

@@ -3,7 +3,7 @@ const eslint   = require('gulp-eslint');
 
 gulp.task('lint', () =>
           gulp.src(['lib/**/*.{js,jsx}', 'test/**/*.{js,jsx}'])
-              .pipe(eslint({ fix: true }))
+              .pipe(eslint())
               .pipe(eslint.format())
               .pipe(eslint.failAfterError()));
 

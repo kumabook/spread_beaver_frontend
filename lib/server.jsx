@@ -58,12 +58,11 @@ function handleRender(req, res) {
           <Provider store={store}>
             <RouterContext {...renderProps} />
           </Provider>
-        </MuiThemeProvider>
-      );
+        </MuiThemeProvider>);
       const finalState = store.getState();
       res.send(renderFullPage(html, finalState));
     } else {
-       res.status(500).send('unexpected error');
+      res.status(500).send('unexpected error');
     }
   });
 }
@@ -73,9 +72,9 @@ const port     = 3000;
 const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, {
   noInfo:     true,
-  publicPath: webpackConfig.output.publicPath
+  publicPath: webpackConfig.output.publicPath,
 }));
-app.use(favicon(__dirname + '/../static/favicon.ico'));
+app.use(favicon(`${__dirname}/../static/favicon.ico`));
 app.use(webpackHotMiddleware(compiler));
 app.use(handleRender);
 app.listen(port);
