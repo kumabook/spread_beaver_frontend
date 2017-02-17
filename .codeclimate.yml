@@ -2,7 +2,12 @@ engines:
   eslint:
     enabled: true
     channel: "eslint-3"
+    config: .eslintrc
+    extensions:
+    - .js
+    - .jsx
 
 ratings:
    paths:
    - "**.js"
+   - "**.jsx"
