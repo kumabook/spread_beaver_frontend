@@ -33,9 +33,9 @@ match({ history, routes }, (error, redirectLocation, renderProps) => {
   render(
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <Provider store={store}>
-        <Router {...renderProps}/>
+        <Router {...renderProps} />
       </Provider>
     </MuiThemeProvider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 });
