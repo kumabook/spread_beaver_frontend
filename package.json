@@ -9,6 +9,7 @@
     "lint": "gulp lint",
     "test": "cross-env NODE_ENV=test nyc mocha ./test/**/*.spec.{js,jsx}",
     "test:watch": "npm test -- --watch",
+    "coverage": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "postinstall": "npm run build"
   },
   "repository": {
@@ -49,6 +50,7 @@
   "devDependencies": {
     "babel-plugin-istanbul": "^4.0.0",
     "babel-register": "^6.23.0",
+    "coveralls": "^2.11.16",
     "cross-env": "^3.1.4",
     "enzyme": "^2.7.1",
     "eslint": "^3.15.0",

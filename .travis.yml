@@ -3,4 +3,5 @@ node_js:
   - "stable"
   - "7"
 after_success:
+  - npm run coverage
   - npm run build
