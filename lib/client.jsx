@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["__PRELOADED_STATE__"] }] */
+import 'babel-polyfill';
 import React                from 'react';
 import { render }           from 'react-dom';
 import { Provider }         from 'react-redux';
@@ -15,20 +16,24 @@ import {
   applyMiddleware,
   createStore,
 } from 'redux';
+import createSagaMiddleware, { END } from 'redux-saga';
 import {
   syncHistoryWithStore,
   routerMiddleware,
 } from 'react-router-redux';
 import routes   from './routes';
 import reducers from './reducers';
+import rootSaga from './sagas';
 
 injectTapEventPlugin();
 const preloadedState = window.__PRELOADED_STATE__;
 
-const middleware = routerMiddleware(browserHistory);
-const store      = createStore(reducers, preloadedState, applyMiddleware(middleware));
-const history    = syncHistoryWithStore(browserHistory, store);
+const sagaMiddleware = createSagaMiddleware();
+const middleware     = applyMiddleware(routerMiddleware(browserHistory), sagaMiddleware);
+const store          = createStore(reducers, preloadedState, middleware);
+const history        = syncHistoryWithStore(browserHistory, store);
 
+sagaMiddleware.run(rootSaga);
 match({ history, routes }, (error, redirectLocation, renderProps) => {
   render(
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
