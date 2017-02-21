@@ -7,10 +7,12 @@ import SwipeableViews from 'react-swipeable-views';
 class StreamTabs extends React.Component {
   static get propTypes() {
     return {
-      changeStream: React.PropTypes.func.isRequired,
-      streams:      React.PropTypes.array.isRequired,
-      streamId:     React.PropTypes.string.isRequired,
-      children:     React.PropTypes.element,
+      changeStream:   React.PropTypes.func.isRequired,
+      fetchStream:    React.PropTypes.func.isRequired,
+      streams:        React.PropTypes.array.isRequired,
+      streamId:       React.PropTypes.string.isRequired,
+      targetStreamId: React.PropTypes.string.isRequired,
+      children:       React.PropTypes.element,
     };
   }
   static get defaultProps() {
@@ -19,6 +21,15 @@ class StreamTabs extends React.Component {
     };
   }
   componentDidMount() {
+    this.fetchStream();
+  }
+  componentDidUpdate() {
+    this.fetchStream();
+  }
+  fetchStream() {
+    if (this.props.streamId !== this.props.targetStreamId) {
+      this.props.fetchStream(this.props.targetStreamId);
+    }
   }
   currentIndex() {
     const i = this.props.streams.findIndex(s => s.id === this.props.streamId);
@@ -67,16 +78,16 @@ class StreamTabs extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    streams:  state.streams.items,
-    streamId: ownProps.params.splat,
+    streams:        state.streams.items,
+    streamId:       state.entries.streamId,
+    targetStreamId: ownProps.params.splat,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeStream: (streamId) => {
-      dispatch(push(`/streams/${streamId}`));
-    },
+    changeStream: streamId => dispatch(push(`/streams/${streamId}`)),
+    fetchStream:  streamId => dispatch({ type: 'fetch_stream', streamId }),
   };
 }
 
