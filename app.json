@@ -1,0 +1,17 @@
+{
+  "name": "Spread Beaver Frontend",
+  "description": "a news, videos and tracks aggregation api server written in rails",
+  "keywords": [
+    "rss",
+    "news"
+  ],
+  "repository": "https://github.com/kumabook/spread_beaver_frontend",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "image": "heroku/nodejs",
+  "addons": []
+}
