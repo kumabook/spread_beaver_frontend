@@ -91,7 +91,7 @@ function handleRender(req, res) {
 }
 
 const app      = express();
-const port     = 4000;
+const port     = process.env.PORT || 4000;
 const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, {
   noInfo:     true,
