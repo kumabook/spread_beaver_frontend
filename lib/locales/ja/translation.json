@@ -1,0 +1,19 @@
+{
+  "app": {
+    "name": "Spread Beaver"
+  },
+  "locale": "ja",
+  "common": {
+  },
+  "message": {
+  },
+  "api": {
+  },
+  "App": {
+    "my_channels": "マイチャンネル",
+    "favorite": "お気に入り",
+    "login": "ログイン"
+  },
+  "Header": {
+  }
+}

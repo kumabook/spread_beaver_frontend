@@ -1,35 +1,21 @@
-import React          from 'react';
-import { connect }    from 'react-redux';
-import { push }       from 'react-router-redux';
-import { Tabs, Tab }  from 'material-ui/Tabs';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { translate } from 'react-i18next';
+import { push } from 'react-router-redux';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
+import StreamGrid from './StreamGrid';
 
 class StreamTabs extends React.Component {
   static get propTypes() {
     return {
-      changeStream:   React.PropTypes.func.isRequired,
-      fetchStream:    React.PropTypes.func.isRequired,
-      streams:        React.PropTypes.array.isRequired,
-      streamId:       React.PropTypes.string.isRequired,
-      targetStreamId: React.PropTypes.string.isRequired,
-      children:       React.PropTypes.element,
+      changeStream: PropTypes.func.isRequired,
+      // eslint-disable-next-line react/forbid-prop-types
+      streams: PropTypes.array.isRequired,
+      streamId: PropTypes.string.isRequired,
     };
-  }
-  static get defaultProps() {
-    return {
-      children: <div />,
-    };
-  }
-  componentDidMount() {
-    this.fetchStream();
-  }
-  componentDidUpdate() {
-    this.fetchStream();
-  }
-  fetchStream() {
-    if (this.props.streamId !== this.props.targetStreamId) {
-      this.props.fetchStream(this.props.targetStreamId);
-    }
   }
   currentIndex() {
     const i = this.props.streams.findIndex(s => s.id === this.props.streamId);
@@ -50,7 +36,7 @@ class StreamTabs extends React.Component {
       if (stream.id === this.props.streamId) {
         return (
           <div key={`view:${stream.id}`}>
-            {this.props.children}
+            <StreamGrid />
           </div>
         );
       }
@@ -76,19 +62,19 @@ class StreamTabs extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    streams:        state.streams.items,
-    streamId:       state.entries.streamId,
-    targetStreamId: ownProps.params.splat,
+    streams: state.streams.items,
+    streamId: state.entries.streamId,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeStream: streamId => dispatch(push(`/streams/${streamId}`)),
-    fetchStream:  streamId => dispatch({ type: 'fetch_stream', streamId }),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StreamTabs);
+export default translate()(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(StreamTabs))
+);

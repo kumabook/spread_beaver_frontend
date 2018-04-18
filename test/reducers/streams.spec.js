@@ -1,4 +1,4 @@
-import assert  from 'assert';
+import assert from 'assert';
 import reducer from '../../lib/reducers/streams';
 
 describe('streams reducer', () => {
