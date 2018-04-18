@@ -5,10 +5,12 @@
     "prettier",
     "prettier/react",
     "prettier/standard",
+    "plugin:css-modules/recommended"
   ],
   "plugins": [
     "react",
     "prettier",
+    "css-modules"
   ],
   "parserOptions": {
     "sourceType": "module",

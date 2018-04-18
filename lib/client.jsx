@@ -20,6 +20,7 @@ import rootSaga from './sagas';
 import App from './containers/App';
 import en from './locales/en/translation.json';
 import ja from './locales/ja/translation.json';
+import './styles';
 
 const debug = process.env.NODE_ENV === 'develop';
 

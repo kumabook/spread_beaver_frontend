@@ -41,5 +41,10 @@ jspm_packages
 .DS_Store
 
 # build
-static/bundle.js
-static/bundle.js.map
+static/bundle.js*
+static/bundle.css*
+static/vendor.css*
+
+# env file
+.env
+.envrc
