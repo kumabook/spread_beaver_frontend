@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import StreamTabs from './containers/StreamTabs';
 
 const routes = (
@@ -7,6 +7,7 @@ const routes = (
     <Route path="/streams">
       <StreamTabs />
     </Route>
+    <Redirect to="/streams/tag/global.latest" />
   </Switch>
 );
 

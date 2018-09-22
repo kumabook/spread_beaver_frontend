@@ -2,7 +2,27 @@
   "presets": ["es2015", "react", "stage-1"],
   "env": {
     "test": {
-      "plugins": ["istanbul"]
+      "plugins": [
+      "transform-runtime",
+      "istanbul",
+      [
+        "css-modules-transform",
+        {
+          "generateScopedName": "[path][name]__[local]--[hash:base64:5]",
+          "extensions": [".css"]
+        }
+      ]]
+    },
+    "server": {
+      "plugins": [
+        [
+          "css-modules-transform",
+          {
+            "generateScopedName": "[path][name]__[local]--[hash:base64:5]",
+            "extensions": [".css"]
+          }
+        ]
+      ]
     }
   }
 }

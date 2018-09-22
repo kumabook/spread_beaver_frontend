@@ -14,8 +14,13 @@ class StreamTabs extends React.Component {
       changeStream: PropTypes.func.isRequired,
       // eslint-disable-next-line react/forbid-prop-types
       streams: PropTypes.array.isRequired,
-      streamId: PropTypes.string.isRequired,
+      streamId: PropTypes.string,
     };
+  }
+  static get defaultProps() {
+    return {
+      streamId: 'tag/global.latest'
+    }
   }
   currentIndex() {
     const i = this.props.streams.findIndex(s => s.id === this.props.streamId);
